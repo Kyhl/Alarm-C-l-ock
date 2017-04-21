@@ -7,14 +7,12 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 int bluetoothRx = 7;
 int bluetoothTx = 6;
-int Vibrator = 8;
+int Vibrator = 9;
 int data;   
-char data1='a';
 char timer;
 SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);//Arduino RX,Tx
 int counter = 0;
 int interval = 15;
-int countered;
 void setup() {
   Serial.begin(9600);
   bluetooth.begin(115200);//standard bluetooth mate
@@ -26,6 +24,7 @@ void setup() {
 }
 
 void loop() {
+  analogWrite(Vibrator,0);
   bluetooth.listen();
   timercontrol();
   delay(1000);
@@ -36,24 +35,16 @@ void loop() {
     counter=0;
     lcd.clear(); 
   }
-  bluetooth.println(data1);
-  Serial.println(counter);
   Serial.println(interval);
+  Serial.println(counter);
   lcd.setCursor(0, 0);
   lcd.print("Interval:");
   lcd.print(interval);
+  lcd.print(" sek.");
   lcd.setCursor(0, 1);
   lcd.print(interval-counter);
   lcd.print(" sek. tilbage");
-  data=' ';
-  //countered=counter/60;
- /* lcd.print("Send ");
-  lcd.print(millis()/1000);
-  // set the cursor to column 0, line 1
-  // (note: line 1 is the second row, since counting begins with 0):
-  lcd.setCursor(0, 1);
-    lcd.print(" nudes plz :)");*/
-    
+  data=' ';    
 }
 void bluetoothAction(){  
  // Serial.println("BluetoothAction");
@@ -94,25 +85,27 @@ void bluetoothAction(){
       lcd.setCursor(0, 1);
       lcd.print("modtaget");
     }
+    bluetooth.println(data);
+    analogWrite(Vibrator, 150);
     delay(10000);
-    counter=0;
 }
 void timercontrol(){  
  // Serial.println("BluetoothAction");
   
  if(bluetooth.available()){ 
     timer= (char)bluetooth.read();
-    if(timer=='y'){
+    if(timer=='a'){
       interval=15;
-    }else if(timer=='u'){
+    }else if(timer=='b'){
       interval=20;
-    }else if(timer=='i'){
+    }else if(timer=='c'){
       interval=30;
-   }else if(timer=='o'){
+   }else if(timer=='d'){
       interval=45;
-   }else if(timer=='p'){
+   }else if(timer=='e'){
       interval=60;
-}
+   }
+   Serial.println(timer);
  }
  timer=' ';
 }
