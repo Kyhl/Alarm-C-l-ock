@@ -4,17 +4,21 @@
 
 // De pins som skal anvende LiquidCrystal biblioteket, hvilket er det der styrer displayet, bestemmes.
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
 // Variablerne bliver tildelt en Pin på Arduinoen
 int bluetoothRx = 7;
 int bluetoothTx = 6;
 int Vibrator = 9;
 int data;   
 char timer;
+
 //Det opgøres hvilke pins der skal sende og modtage bluetoothdataen
 SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);//Arduino RX,Tx
+
 //Vores timer bliver sat til at starte på 0, og intervallet bliver sat til 15 som standard
 int counter = 0;
 int interval = 15;
+
 void setup() {
   Serial.begin(9600);
   bluetooth.begin(115200);//standard bluetooth mate
@@ -22,7 +26,6 @@ void setup() {
   pinMode(Vibrator,OUTPUT);
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
-  
 }
 
 void loop() {
@@ -106,6 +109,7 @@ void bluetoothAction(){
     //Tænder for vibrationsmotoren
     analogWrite(Vibrator, 150);
 }
+
 void timercontrol(){  
  //If funktion der kun tænder hvis en bluetoothforbindelse er til stede
  if(bluetooth.available()){ 
